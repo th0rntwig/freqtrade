@@ -408,6 +408,9 @@ class IFreqaiModel(ABC):
             dk.use_DBSCAN_to_remove_outliers(predict=False, eps=eps)
             self.dd.old_DBSCAN_eps[dk.pair] = dk.data['DBSCAN_eps']
 
+        if self.freqai_info["feature_parameters"].get('noise_sigma', 0):
+            dk.add_noise_to_dataset()
+
     def data_cleaning_predict(self, dk: FreqaiDataKitchen, dataframe: DataFrame) -> None:
         """
         Base data cleaning method for predict.

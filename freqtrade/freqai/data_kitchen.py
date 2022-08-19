@@ -729,7 +729,7 @@ class FreqaiDataKitchen:
 
         return None
 
-    def add_noise_to_dataset(self, data_dictionary: Dict) -> Dict[Any, Any]:
+    def add_noise_to_dataset(self) -> None:
         """
         Add noise to train features to reduce the risk of overfitting.
         :params:
@@ -742,10 +742,10 @@ class FreqaiDataKitchen:
         compute_df = copy.deepcopy(self.data_dictionary['train_features'])
         noise = np.random.normal(mu, sigma, [compute_df.shape[0], compute_df.shape[1]])
         compute_df = compute_df + noise
-        data_dictionary["train_features"] = (
+        self.data_dictionary["train_features"] = (
             2 * (compute_df - compute_df.min()) / (compute_df.max() - compute_df.min()) - 1
         )
-        return data_dictionary
+        return
 
     def find_features(self, dataframe: DataFrame) -> None:
         """
