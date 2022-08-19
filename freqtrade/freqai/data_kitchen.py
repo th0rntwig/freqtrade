@@ -729,6 +729,24 @@ class FreqaiDataKitchen:
 
         return None
 
+    def add_noise_to_dataset(self, data_dictionary: Dict) -> Dict[Any, Any]:
+        """
+        Add noise to train features to reduce the risk of overfitting.
+        :params:
+        :data_dictionary: dictionary containing the cleaned and split training/test data/labels
+        :returns:
+        :data_dictionary: updated dictionary with noise added to training data.
+        """
+        mu = 0  #no shift
+        sigma = self.freqai_config["feature_parameters"]["noise_sigma"]
+        compute_df = copy.deepcopy(self.data_dictionary['train_features'])
+        noise = np.random.normal(mu, sigma, [compute_df.shape[0], compute_df.shape[1]])
+        compute_df = compute_df + noise
+        data_dictionary["train_features"] = (
+            2 * (compute_df - compute_df.min()) / (compute_df.max() - compute_df.min()) - 1
+        )
+        return data_dictionary
+
     def find_features(self, dataframe: DataFrame) -> None:
         """
         Find features in the strategy provided dataframe
