@@ -850,6 +850,9 @@ class FreqaiDataKitchen:
         compute_df = self.data_dictionary['train_features']
         noise = np.random.normal(mu, sigma, [compute_df.shape[0], compute_df.shape[1]])
         self.data_dictionary['train_features'] += noise
+        # normalsing transformed training features
+        self.data_dictionary["train_features"] = self.normalize_single_dataframe(
+            self.data_dictionary["train_features"])
         return
 
     def find_features(self, dataframe: DataFrame) -> None:
